@@ -114,7 +114,5 @@ ALTER TABLE "aporte" ADD CONSTRAINT "aporte_campania_id_campania_id_fk" FOREIGN 
 ALTER TABLE "campania" ADD CONSTRAINT "campania_ong_id_ong_id_fk" FOREIGN KEY ("ong_id") REFERENCES "public"."ong"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "donacion_general" ADD CONSTRAINT "donacion_general_ong_id_ong_id_fk" FOREIGN KEY ("ong_id") REFERENCES "public"."ong"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "donacion_general" ADD CONSTRAINT "donacion_general_donante_id_donante_id_fk" FOREIGN KEY ("donante_id") REFERENCES "public"."donante"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "donante" ADD CONSTRAINT "donante_user_id_auth.users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."auth.users"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "item_pedido" ADD CONSTRAINT "item_pedido_campania_id_campania_id_fk" FOREIGN KEY ("campania_id") REFERENCES "public"."campania"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "objetivo_donante" ADD CONSTRAINT "objetivo_donante_donante_id_donante_id_fk" FOREIGN KEY ("donante_id") REFERENCES "public"."donante"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "ong" ADD CONSTRAINT "ong_user_id_auth.users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."auth.users"("id") ON DELETE cascade ON UPDATE no action;
+ALTER TABLE "objetivo_donante" ADD CONSTRAINT "objetivo_donante_donante_id_donante_id_fk" FOREIGN KEY ("donante_id") REFERENCES "public"."donante"("id") ON DELETE cascade ON UPDATE no action;

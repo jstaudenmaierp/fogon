@@ -6,10 +6,8 @@ import {
   integer,
   decimal,
   pgEnum,
-  check,
   unique,
 } from 'drizzle-orm/pg-core'
-import { sql } from 'drizzle-orm'
 
 // Enums
 export const tipoDonacionEnum = pgEnum('tipo_donacion', [
@@ -68,7 +66,7 @@ export const interesDonanteEnum = pgEnum('interes_donante', [
 // Tables
 export const ong = pgTable('ong', {
   id: uuid('id').defaultRandom().primaryKey(),
-  userId: uuid('user_id').references(() => authUsers.id, { onDelete: 'cascade' }),
+  userId: uuid('user_id'),
   nombre: text('nombre').notNull(),
   logoUrl: text('logo_url'),
   descripcion: text('descripcion').notNull(),
@@ -99,9 +97,7 @@ export const campania = pgTable('campania', {
   localId: uuid('local_id').unique(),
   syncEstado: syncEstadoEnum('sync_estado').default('sincronizada'),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
-}, (t) => [
-  check('urgencia_check', sql`${t.urgencia} BETWEEN 1 AND 5`),
-])
+})
 
 export const itemPedido = pgTable('item_pedido', {
   id: uuid('id').defaultRandom().primaryKey(),
@@ -114,7 +110,7 @@ export const itemPedido = pgTable('item_pedido', {
 
 export const donante = pgTable('donante', {
   id: uuid('id').defaultRandom().primaryKey(),
-  userId: uuid('user_id').references(() => authUsers.id, { onDelete: 'cascade' }),
+  userId: uuid('user_id'),
   tipo: tipoDonanteEnum('tipo').notNull(),
   email: text('email').notNull(),
   telefono: text('telefono'),
@@ -166,8 +162,3 @@ export const objetivoDonante = pgTable('objetivo_donante', {
 }, (t) => [
   unique('objetivo_donante_donante_anio_tipo_uniq').on(t.donanteId, t.anio, t.tipo),
 ])
-
-// Reference to auth.users (Supabase)
-const authUsers = pgTable('auth.users', {
-  id: uuid('id').primaryKey(),
-})
