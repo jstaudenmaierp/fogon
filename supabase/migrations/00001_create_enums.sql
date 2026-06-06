@@ -1,0 +1,12 @@
+CREATE TYPE tipo_donacion AS ENUM ('plata', 'especie', 'voluntariado', 'general');
+CREATE TYPE tipo_necesidad AS ENUM ('plata', 'especie', 'voluntariado');
+CREATE TYPE target_donante AS ENUM ('persona', 'empresa');
+CREATE TYPE estado_campania AS ENUM ('activa', 'cerrada', 'eliminada');
+CREATE TYPE sync_estado AS ENUM ('pendiente', 'sincronizada');
+CREATE TYPE tipo_donante AS ENUM ('persona', 'empresa');
+CREATE TYPE tipo_aporte AS ENUM ('plata', 'especie', 'voluntariado');
+CREATE TYPE modalidad_aporte AS ENUM ('unica', 'suscripcion');
+CREATE TYPE estado_aporte AS ENUM ('pendiente', 'confirmado', 'a_coordinar');
+CREATE TYPE modalidad_general AS ENUM ('unica', 'suscripcion', 'recursos');
+CREATE TYPE tipo_objetivo AS ENUM ('plata', 'especie', 'voluntariado');
+CREATE TYPE estado_objetivo AS ENUM ('en_curso', 'cumplido', 'sin_meta');

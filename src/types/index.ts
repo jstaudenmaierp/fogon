@@ -1,0 +1,6 @@
+export * from './ong'
+export * from './campania'
+export * from './donante'
+export * from './aporte'
+export * from './donacion-general'
+export * from './objetivo'
