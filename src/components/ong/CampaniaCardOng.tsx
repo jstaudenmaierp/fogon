@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Pencil, Users, XCircle } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 export type EstadoCampania = "activa" | "borrador" | "cerrada";
@@ -127,18 +127,20 @@ export function CampaniaCardOng({ campania }: { campania: CampaniaOng }) {
 
       {/* Acciones */}
       <div className="flex gap-2 px-5 pb-5">
-        <Button variant="outline" size="sm" className="flex-1 gap-1.5" asChild>
-          <Link href={`/ong/causas/${id}/editar`}>
-            <Pencil className="size-3.5" />
-            Editar
-          </Link>
-        </Button>
-        <Button variant="outline" size="sm" className="flex-1 gap-1.5" asChild>
-          <Link href={`/ong/causas/${id}/donantes`}>
-            <Users className="size-3.5" />
-            Ver donantes
-          </Link>
-        </Button>
+        <Link
+          href={`/ong/causas/${id}/editar`}
+          className={cn(buttonVariants({ variant: "outline", size: "sm" }), "flex-1 gap-1.5")}
+        >
+          <Pencil className="size-3.5" />
+          Editar
+        </Link>
+        <Link
+          href={`/ong/causas/${id}/donantes`}
+          className={cn(buttonVariants({ variant: "outline", size: "sm" }), "flex-1 gap-1.5")}
+        >
+          <Users className="size-3.5" />
+          Ver donantes
+        </Link>
         {estado !== "cerrada" && (
           <Button variant="destructive" size="sm" className="flex-1 gap-1.5">
             <XCircle className="size-3.5" />
