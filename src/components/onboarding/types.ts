@@ -1,11 +1,14 @@
+export type TipoDonacion = "plata" | "especie" | "voluntariado";
+
 export interface OnboardingData {
   nombre: string;
   apellido: string;
   email: string;
-  telefono: string;
   intereses: string[];
-  objetivo_tipo: "plata" | "especie" | "voluntariado" | "";
-  objetivo_meta: string;
+  objetivo_tipos: TipoDonacion[];
+  meta_plata: string;
+  meta_especie: string;
+  meta_voluntariado: string;
 }
 
 export interface StepProps {

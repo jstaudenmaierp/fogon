@@ -1,20 +1,25 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { ArrowLeft } from "lucide-react";
 import { saveOnboarding } from "@/actions/auth";
-import { OnboardingProgress } from "./OnboardingProgress";
-import { StepIdentidad } from "./steps/StepIdentidad";
-import { StepContacto } from "./steps/StepContacto";
-import { StepIntereses } from "./steps/StepIntereses";
-import { StepObjetivo } from "./steps/StepObjetivo";
 import type { OnboardingData } from "./types";
 import { ColmenaLogo } from "@/components/ColmenaLogo";
+import { StepSuccess } from "./steps/StepSuccess";
+import { StepIdentidad } from "./steps/StepIdentidad";
+import { StepIntereses } from "./steps/StepIntereses";
+import { StepTipo } from "./steps/StepTipo";
+import { StepMetas } from "./steps/StepMetas";
 
-const STEP_TITLES = [
-  { title: "¿Cómo te llamás?", sub: "Usaremos tu nombre para personalizar tu experiencia." },
-  { title: "¿Cómo te contactamos?", sub: "Para mantenerte al tanto de las causas que seguís." },
-  { title: "¿Qué te interesa?", sub: "Seleccioná al menos una categoría." },
-  { title: "¿Cuál es tu objetivo?", sub: "Podés cambiar esto más adelante." },
+// 4 pasos con barra + 1 pantalla de éxito (sin barra)
+const TOTAL_STEPS = 4;
+
+const STEP_META = [
+  { title: "Contanos quién sos", sub: "Solo lo esencial para empezar" },
+  { title: "¿Qué causas te importan?", sub: "Elegí al menos una" },
+  { title: "¿Cómo querés ayudar?", sub: "Podés elegir más de uno" },
+  { title: `Ponete una meta para ${new Date().getFullYear()}`, sub: "Opcional — podés cambiarlo desde tu perfil" },
 ];
 
 interface OnboardingFlowProps {
@@ -22,6 +27,7 @@ interface OnboardingFlowProps {
 }
 
 export function OnboardingFlow({ userEmail }: OnboardingFlowProps) {
+  const router = useRouter();
   const [step, setStep] = useState(0);
   const [submitting, setSubmitting] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
@@ -30,61 +36,87 @@ export function OnboardingFlow({ userEmail }: OnboardingFlowProps) {
     nombre: "",
     apellido: "",
     email: userEmail,
-    telefono: "",
     intereses: [],
-    objetivo_tipo: "",
-    objetivo_meta: "",
+    objetivo_tipos: [],
+    meta_plata: "",
+    meta_especie: "",
+    meta_voluntariado: "",
   });
 
   function handleUpdate(updates: Partial<OnboardingData>) {
     setData((prev) => ({ ...prev, ...updates }));
   }
 
+  function handleBack() {
+    if (step === 0) {
+      router.push("/login");
+    } else {
+      setStep((s) => s - 1);
+    }
+  }
+
   async function handleSubmit() {
     setSubmitting(true);
     setServerError(null);
     const result = await saveOnboarding({
-      ...data,
-      objetivo_tipo: data.objetivo_tipo as "plata" | "especie" | "voluntariado",
-      objetivo_meta: data.objetivo_meta ? Number(data.objetivo_meta) : null,
+      nombre: data.nombre,
+      apellido: data.apellido,
+      email: data.email,
+      intereses: data.intereses,
+      objetivo_tipos: data.objetivo_tipos,
+      meta_plata: data.meta_plata ? Number(data.meta_plata) : null,
+      meta_especie: data.meta_especie ? Number(data.meta_especie) : null,
+      meta_voluntariado: data.meta_voluntariado ? Number(data.meta_voluntariado) : null,
     });
     if (result?.error) {
       setServerError(result.error);
       setSubmitting(false);
+      return;
     }
+    // Éxito → paso a pantalla de éxito
+    setStep(4);
+    setSubmitting(false);
   }
 
   const stepProps = {
     data,
     onUpdate: handleUpdate,
     onNext: () => setStep((s) => s + 1),
-    onBack: () => setStep((s) => s - 1),
+    onBack: handleBack,
   };
+
+  // Pantalla de éxito (fuera del layout normal)
+  if (step === 4) {
+    return <StepSuccess />;
+  }
+
+  const meta = STEP_META[step];
 
   return (
     <div className="flex flex-col items-center gap-8 w-full max-w-sm">
       {/* Logo */}
       <ColmenaLogo className="h-[27px] w-auto" />
 
-      {/* Progreso */}
-      <OnboardingProgress currentStep={step} />
-
-      {/* Título del paso */}
-      <div className="text-center">
-        <h1 className="text-2xl font-bold text-secondary">{STEP_TITLES[step].title}</h1>
-        <p className="text-sm text-[#767676] mt-1">{STEP_TITLES[step].sub}</p>
+      {/* Encabezado */}
+      <div>
+        <h1 className="text-[28px] font-bold text-[#510d09] leading-[42px]">
+          {meta.title}
+        </h1>
+        <p className="text-[14px] text-[rgba(81,13,9,0.5)] mt-[6px]">
+          {meta.sub}
+        </p>
       </div>
 
       {/* Steps */}
       {step === 0 && <StepIdentidad {...stepProps} />}
-      {step === 1 && <StepContacto {...stepProps} />}
-      {step === 2 && <StepIntereses {...stepProps} />}
+      {step === 1 && <StepIntereses {...stepProps} />}
+      {step === 2 && <StepTipo {...stepProps} />}
       {step === 3 && (
-        <StepObjetivo {...stepProps} onSubmit={handleSubmit} submitting={submitting} />
+        <StepMetas {...stepProps} onSubmit={handleSubmit} submitting={submitting} />
       )}
 
       {serverError && (
-        <p className="text-sm text-red-600 text-center">{serverError}</p>
+        <p className="text-[13px] text-red-600 text-center -mt-4">{serverError}</p>
       )}
     </div>
   );

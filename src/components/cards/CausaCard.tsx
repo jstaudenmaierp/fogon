@@ -128,7 +128,7 @@ export function CausaCard({
 
       {/* CTA */}
       <Link
-        href={`/login?redirect=/causas/${id}`}
+        href={`/causas/${id}`}
         className="flex items-center justify-center h-8 rounded-full bg-[#febd30] text-[#510d09] text-[12px] font-medium hover:bg-[#febd30]/90 transition-colors shrink-0 w-full"
       >
         Quiero donar
