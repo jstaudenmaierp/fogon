@@ -37,7 +37,7 @@ export const tipoAporteEnum = pgEnum('tipo_aporte', [
   'plata', 'especie', 'voluntariado',
 ])
 
-export const modalidadAorteEnum = pgEnum('modalidad_aporte', [
+export const modalidadAporteEnum = pgEnum('modalidad_aporte', [
   'unica', 'suscripcion',
 ])
 
@@ -129,7 +129,7 @@ export const aporte = pgTable('aporte', {
   campaniaId: uuid('campania_id').references(() => campania.id, { onDelete: 'set null' }),
   tipo: tipoAporteEnum('tipo').notNull(),
   monto: decimal('monto', { precision: 10, scale: 2 }),
-  modalidad: modalidadAorteEnum('modalidad'),
+  modalidad: modalidadAporteEnum('modalidad'),
   estado: estadoAporteEnum('estado').default('pendiente'),
   mpPaymentId: text('mp_payment_id'),
   fecha: timestamp('fecha', { withTimezone: true }).defaultNow(),
