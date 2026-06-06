@@ -12,8 +12,6 @@ interface StepMetasProps extends StepProps {
 }
 
 export function StepMetas({ data, onUpdate, onSubmit, submitting }: StepMetasProps) {
-  const year = new Date().getFullYear();
-
   return (
     <div className="flex flex-col gap-[12px] w-full">
       {/* GoalRows por cada tipo seleccionado */}

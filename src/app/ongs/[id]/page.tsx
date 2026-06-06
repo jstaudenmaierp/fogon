@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ChevronLeft, Share2, Calendar } from "lucide-react";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { CausaCard } from "@/components/cards/CausaCard";
-import { diasRestantes } from "@/lib/dates";
+
 
 const TIPO_LABEL: Record<string, string> = {
   plata: "Dinero",

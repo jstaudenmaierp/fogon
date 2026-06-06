@@ -20,7 +20,7 @@ export async function OngsSection({ title = "Conocé ONGs", limit = 5 }: OngsSec
 
   const ongMap = new Map<string, { nombre: string; logoUrl: string | null; causasActivas: number }>();
   for (const c of campanias) {
-    const ong = c.ong as { id: string; nombre: string; logo_url: string | null } | null;
+    const ong = c.ong as unknown as { id: string; nombre: string; logo_url: string | null } | null;
     if (!ong) continue;
     const entry = ongMap.get(ong.id) ?? { nombre: ong.nombre, logoUrl: ong.logo_url, causasActivas: 0 };
     entry.causasActivas += 1;

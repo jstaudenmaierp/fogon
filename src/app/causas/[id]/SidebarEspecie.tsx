@@ -55,11 +55,7 @@ export function SidebarEspecie({
 
   const isEspecie = tipoNecesidad === "especie";
 
-  const labelUnidades = isEspecie ? "necesarios" : "voluntarios necesarios";
   const labelContactos = isEspecie ? "contactos recientes" : "voluntarios anotados";
-  const tituloModal = isEspecie
-    ? "Quiero donar cosas"
-    : "Quiero ser voluntario/a";
   const subModal = isEspecie
     ? "Completá la información para que la ONG te contacte."
     : "Completá tu disponibilidad para que la ONG te contacte.";

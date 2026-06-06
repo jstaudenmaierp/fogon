@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
+
 import { saveOnboarding } from "@/actions/auth";
 import type { OnboardingData } from "./types";
 import { ColmenaLogo } from "@/components/ColmenaLogo";
@@ -12,8 +12,7 @@ import { StepIntereses } from "./steps/StepIntereses";
 import { StepTipo } from "./steps/StepTipo";
 import { StepMetas } from "./steps/StepMetas";
 
-// 4 pasos con barra + 1 pantalla de éxito (sin barra)
-const TOTAL_STEPS = 4;
+
 
 const STEP_META = [
   { title: "Contanos quién sos", sub: "Solo lo esencial para empezar" },
