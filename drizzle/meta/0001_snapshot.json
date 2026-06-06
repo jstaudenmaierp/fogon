@@ -1,0 +1,872 @@
+{
+  "id": "9e60d6dd-ca88-4a84-9789-ed57b69953f4",
+  "prevId": "d2de7be6-540f-4b0a-bfe6-c9409722533e",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.aporte": {
+      "name": "aporte",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "donante_id": {
+          "name": "donante_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "campania_id": {
+          "name": "campania_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "tipo": {
+          "name": "tipo",
+          "type": "tipo_aporte",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "monto": {
+          "name": "monto",
+          "type": "numeric(10, 2)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "modalidad": {
+          "name": "modalidad",
+          "type": "modalidad_aporte",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "estado": {
+          "name": "estado",
+          "type": "estado_aporte",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'pendiente'"
+        },
+        "mp_payment_id": {
+          "name": "mp_payment_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "fecha": {
+          "name": "fecha",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "aporte_donante_id_donante_id_fk": {
+          "name": "aporte_donante_id_donante_id_fk",
+          "tableFrom": "aporte",
+          "tableTo": "donante",
+          "columnsFrom": [
+            "donante_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "aporte_campania_id_campania_id_fk": {
+          "name": "aporte_campania_id_campania_id_fk",
+          "tableFrom": "aporte",
+          "tableTo": "campania",
+          "columnsFrom": [
+            "campania_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.campania": {
+      "name": "campania",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "ong_id": {
+          "name": "ong_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "titulo": {
+          "name": "titulo",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "imagen_url": {
+          "name": "imagen_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "descripcion": {
+          "name": "descripcion",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "audio_url": {
+          "name": "audio_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "tipo_necesidad": {
+          "name": "tipo_necesidad",
+          "type": "tipo_necesidad",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "target_donante": {
+          "name": "target_donante",
+          "type": "target_donante",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'persona'"
+        },
+        "fecha_limite": {
+          "name": "fecha_limite",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "urgencia": {
+          "name": "urgencia",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "default": 3
+        },
+        "estado": {
+          "name": "estado",
+          "type": "estado_campania",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'activa'"
+        },
+        "local_id": {
+          "name": "local_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "sync_estado": {
+          "name": "sync_estado",
+          "type": "sync_estado",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'sincronizada'"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "campania_ong_id_ong_id_fk": {
+          "name": "campania_ong_id_ong_id_fk",
+          "tableFrom": "campania",
+          "tableTo": "ong",
+          "columnsFrom": [
+            "ong_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "campania_local_id_unique": {
+          "name": "campania_local_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "local_id"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {
+        "urgencia_check": {
+          "name": "urgencia_check",
+          "value": "\"campania\".\"urgencia\" BETWEEN 1 AND 5"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.donacion_general": {
+      "name": "donacion_general",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "ong_id": {
+          "name": "ong_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "donante_id": {
+          "name": "donante_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "modalidad": {
+          "name": "modalidad",
+          "type": "modalidad_general",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "monto": {
+          "name": "monto",
+          "type": "numeric(10, 2)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "mp_subscription_id": {
+          "name": "mp_subscription_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "estado": {
+          "name": "estado",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'pendiente'"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "donacion_general_ong_id_ong_id_fk": {
+          "name": "donacion_general_ong_id_ong_id_fk",
+          "tableFrom": "donacion_general",
+          "tableTo": "ong",
+          "columnsFrom": [
+            "ong_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "donacion_general_donante_id_donante_id_fk": {
+          "name": "donacion_general_donante_id_donante_id_fk",
+          "tableFrom": "donacion_general",
+          "tableTo": "donante",
+          "columnsFrom": [
+            "donante_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.donante": {
+      "name": "donante",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "tipo": {
+          "name": "tipo",
+          "type": "tipo_donante",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "email": {
+          "name": "email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "telefono": {
+          "name": "telefono",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "nombre": {
+          "name": "nombre",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "apellido": {
+          "name": "apellido",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "intereses": {
+          "name": "intereses",
+          "type": "interes_donante[]",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'{}'"
+        },
+        "nombre_empresa": {
+          "name": "nombre_empresa",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "razon_social": {
+          "name": "razon_social",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "cuit": {
+          "name": "cuit",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "rubro": {
+          "name": "rubro",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "objetivo": {
+          "name": "objetivo",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "mail_contacto": {
+          "name": "mail_contacto",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "donante_user_id_auth.users_id_fk": {
+          "name": "donante_user_id_auth.users_id_fk",
+          "tableFrom": "donante",
+          "tableTo": "auth.users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.item_pedido": {
+      "name": "item_pedido",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "campania_id": {
+          "name": "campania_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "nombre": {
+          "name": "nombre",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "cantidad": {
+          "name": "cantidad",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 1
+        },
+        "nuevo_o_usado": {
+          "name": "nuevo_o_usado",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'nuevo'"
+        },
+        "vencimiento": {
+          "name": "vencimiento",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "item_pedido_campania_id_campania_id_fk": {
+          "name": "item_pedido_campania_id_campania_id_fk",
+          "tableFrom": "item_pedido",
+          "tableTo": "campania",
+          "columnsFrom": [
+            "campania_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.objetivo_donante": {
+      "name": "objetivo_donante",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "donante_id": {
+          "name": "donante_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "anio": {
+          "name": "anio",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "tipo": {
+          "name": "tipo",
+          "type": "tipo_objetivo",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "meta_cantidad": {
+          "name": "meta_cantidad",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "meta_monto": {
+          "name": "meta_monto",
+          "type": "numeric(10, 2)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "progreso_cantidad": {
+          "name": "progreso_cantidad",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "default": 0
+        },
+        "progreso_monto": {
+          "name": "progreso_monto",
+          "type": "numeric(10, 2)",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'0'"
+        },
+        "estado": {
+          "name": "estado",
+          "type": "estado_objetivo",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'sin_meta'"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "objetivo_donante_donante_id_donante_id_fk": {
+          "name": "objetivo_donante_donante_id_donante_id_fk",
+          "tableFrom": "objetivo_donante",
+          "tableTo": "donante",
+          "columnsFrom": [
+            "donante_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "objetivo_donante_donante_anio_tipo_uniq": {
+          "name": "objetivo_donante_donante_anio_tipo_uniq",
+          "nullsNotDistinct": false,
+          "columns": [
+            "donante_id",
+            "anio",
+            "tipo"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.ong": {
+      "name": "ong",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "nombre": {
+          "name": "nombre",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "logo_url": {
+          "name": "logo_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "descripcion": {
+          "name": "descripcion",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "mp_account_id": {
+          "name": "mp_account_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "tipos_donacion_habilitados": {
+          "name": "tipos_donacion_habilitados",
+          "type": "tipo_donacion[]",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'{}'"
+        },
+        "instagram_url": {
+          "name": "instagram_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "facebook_url": {
+          "name": "facebook_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "twitter_url": {
+          "name": "twitter_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "linkedin_url": {
+          "name": "linkedin_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "youtube_url": {
+          "name": "youtube_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "razon_social": {
+          "name": "razon_social",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "cuit": {
+          "name": "cuit",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "ong_user_id_auth.users_id_fk": {
+          "name": "ong_user_id_auth.users_id_fk",
+          "tableFrom": "ong",
+          "tableTo": "auth.users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {
+    "public.estado_aporte": {
+      "name": "estado_aporte",
+      "schema": "public",
+      "values": [
+        "pendiente",
+        "confirmado",
+        "a_coordinar"
+      ]
+    },
+    "public.estado_campania": {
+      "name": "estado_campania",
+      "schema": "public",
+      "values": [
+        "activa",
+        "cerrada",
+        "eliminada"
+      ]
+    },
+    "public.estado_objetivo": {
+      "name": "estado_objetivo",
+      "schema": "public",
+      "values": [
+        "en_curso",
+        "cumplido",
+        "sin_meta"
+      ]
+    },
+    "public.interes_donante": {
+      "name": "interes_donante",
+      "schema": "public",
+      "values": [
+        "educacion",
+        "salud",
+        "ambiental",
+        "alimentacion",
+        "infancias",
+        "cultura",
+        "habitat",
+        "animales",
+        "politicas_publicas"
+      ]
+    },
+    "public.modalidad_aporte": {
+      "name": "modalidad_aporte",
+      "schema": "public",
+      "values": [
+        "unica",
+        "suscripcion"
+      ]
+    },
+    "public.modalidad_general": {
+      "name": "modalidad_general",
+      "schema": "public",
+      "values": [
+        "unica",
+        "suscripcion",
+        "recursos"
+      ]
+    },
+    "public.sync_estado": {
+      "name": "sync_estado",
+      "schema": "public",
+      "values": [
+        "pendiente",
+        "sincronizada"
+      ]
+    },
+    "public.target_donante": {
+      "name": "target_donante",
+      "schema": "public",
+      "values": [
+        "persona",
+        "empresa"
+      ]
+    },
+    "public.tipo_aporte": {
+      "name": "tipo_aporte",
+      "schema": "public",
+      "values": [
+        "plata",
+        "especie",
+        "voluntariado"
+      ]
+    },
+    "public.tipo_donacion": {
+      "name": "tipo_donacion",
+      "schema": "public",
+      "values": [
+        "plata",
+        "especie",
+        "voluntariado",
+        "general"
+      ]
+    },
+    "public.tipo_donante": {
+      "name": "tipo_donante",
+      "schema": "public",
+      "values": [
+        "persona",
+        "empresa"
+      ]
+    },
+    "public.tipo_necesidad": {
+      "name": "tipo_necesidad",
+      "schema": "public",
+      "values": [
+        "plata",
+        "especie",
+        "voluntariado"
+      ]
+    },
+    "public.tipo_objetivo": {
+      "name": "tipo_objetivo",
+      "schema": "public",
+      "values": [
+        "plata",
+        "especie",
+        "voluntariado"
+      ]
+    }
+  },
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}

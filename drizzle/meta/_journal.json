@@ -8,6 +8,13 @@
       "when": 1780768875752,
       "tag": "0000_neat_mariko_yashida",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1780769086692,
+      "tag": "0001_volatile_medusa",
+      "breakpoints": true
     }
   ]
 }

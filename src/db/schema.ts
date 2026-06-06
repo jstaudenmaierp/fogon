@@ -79,6 +79,8 @@ export const ong = pgTable('ong', {
   twitterUrl: text('twitter_url'),
   linkedinUrl: text('linkedin_url'),
   youtubeUrl: text('youtube_url'),
+  razonSocial: text('razon_social'),
+  cuit: text('cuit'),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
 })
 
