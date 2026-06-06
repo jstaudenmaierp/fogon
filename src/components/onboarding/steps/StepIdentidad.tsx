@@ -1,5 +1,8 @@
 import type { StepProps } from "../types";
 
+const input =
+  "flex-1 h-[51px] px-[17.5px] bg-white rounded-[14px] border-[1.5px] border-[rgba(81,13,9,0.15)] text-[14px] text-[#1a1a1a] placeholder:text-[rgba(81,13,9,0.5)] outline-none focus:border-[rgba(81,13,9,0.4)] transition-colors";
+
 export function StepIdentidad({ data, onUpdate, onNext }: StepProps) {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -7,35 +10,39 @@ export function StepIdentidad({ data, onUpdate, onNext }: StepProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-5 w-full">
-      <div className="flex flex-col gap-1">
-        <label className="text-sm font-medium text-foreground">Nombre</label>
+    <form onSubmit={handleSubmit} className="flex flex-col gap-[12px] w-full">
+      <div className="flex gap-[12px]">
         <input
           type="text"
           required
+          autoFocus
           value={data.nombre}
           onChange={(e) => onUpdate({ nombre: e.target.value })}
-          placeholder="María"
-          className="h-11 px-4 rounded-xl border border-border bg-white text-sm outline-none focus:border-secondary transition-colors placeholder:text-[#897c5e]/60"
+          placeholder="Nombre"
+          className={input}
         />
-      </div>
-
-      <div className="flex flex-col gap-1">
-        <label className="text-sm font-medium text-foreground">Apellido</label>
         <input
           type="text"
           required
           value={data.apellido}
           onChange={(e) => onUpdate({ apellido: e.target.value })}
-          placeholder="González"
-          className="h-11 px-4 rounded-xl border border-border bg-white text-sm outline-none focus:border-secondary transition-colors placeholder:text-[#897c5e]/60"
+          placeholder="Apellido"
+          className={input}
         />
       </div>
+
+      <input
+        type="email"
+        readOnly
+        value={data.email}
+        tabIndex={-1}
+        className={input + " w-full flex-none opacity-60 cursor-default select-none"}
+      />
 
       <button
         type="submit"
         disabled={!data.nombre.trim() || !data.apellido.trim()}
-        className="h-11 rounded-full bg-secondary text-secondary-foreground font-medium text-sm hover:bg-secondary/90 transition-colors disabled:opacity-40 mt-1"
+        className="w-full h-[56px] rounded-[16px] bg-[#510d09] text-[#febd30] text-[16px] font-semibold disabled:opacity-40 hover:bg-[#6b1109] transition-colors mt-[4px]"
       >
         Continuar
       </button>

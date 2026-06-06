@@ -34,9 +34,9 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
 
-  // Si ya está logueado y va al login, redirigir a ingresar
+  // Si ya está logueado y va al login, redirigir al inicio
   if (user && pathname === '/login') {
-    return NextResponse.redirect(new URL('/ingresar', request.url))
+    return NextResponse.redirect(new URL('/', request.url))
   }
 
   return supabaseResponse

@@ -1,25 +1,22 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Navbar } from "@/components/Navbar";
-import { createClient } from "@/lib/supabase/server";
+import { cn } from "@/lib/utils";
+import { ConditionalNavbar } from "@/components/ConditionalNavbar";
 
 export const metadata: Metadata = {
   title: "fogon",
   description: "Plataforma que conecta ONGs con donantes",
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-
   return (
     <html lang="es">
       <body className="antialiased">
-        <Navbar user={user} />
+        <ConditionalNavbar />
         {children}
       </body>
     </html>

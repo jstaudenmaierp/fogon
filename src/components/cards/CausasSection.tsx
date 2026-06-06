@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { SectionHeader } from "./SectionHeader";
 import { CausaCard } from "./CausaCard";
 
@@ -9,11 +9,11 @@ interface CausasSectionProps {
 }
 
 export async function CausasSection({ title, urgenciaMin, limit = 4 }: CausasSectionProps) {
-  const supabase = await createClient();
+  const supabase = createAdminClient();
 
   let query = supabase
     .from("campania")
-    .select("id, titulo, imagen_url, tipo_necesidad, fecha_limite, descripcion, urgencia")
+    .select("id, titulo, imagen_url, tipo_necesidad, fecha_limite, descripcion, urgencia, ong(nombre)")
     .eq("estado", "activa")
     .order("created_at", { ascending: false })
     .limit(limit);
@@ -37,7 +37,7 @@ export async function CausasSection({ title, urgenciaMin, limit = 4 }: CausasSec
             imagenUrl={c.imagen_url}
             tipoNecesidad={c.tipo_necesidad}
             fechaLimite={c.fecha_limite}
-            ongNombre={null}
+            ongNombre={(c.ong as { nombre?: string } | null)?.nombre ?? null}
             objetivoDescripcion={c.tipo_necesidad !== "plata" ? c.descripcion : null}
           />
         ))}
